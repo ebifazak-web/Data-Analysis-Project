@@ -1,0 +1,95 @@
+SELECT * FROM survey;
+SELECT student_id, favorite_subject, test_score FROM survey;
+SELECT COUNT (*) AS STUDENT_COUNT FROM survey;
+DELETE FROM survey WHERE student_id IS NULL;
+SELECT * FROM survey;
+SELECT MIN(test_score) AS MINIMUM_SCORE, MAX(test_score) AS MAXIMUM_SCORE FROM survey;
+SELECT MIN(test_score) AS MINIMUM_SCORE, MAX(test_score) AS MAXIMUM_SCORE, AVG(test_score) AS AVERAGE_SCORE FROM survey;
+SELECT student_id, test_score FROM survey WHERE test_score > 80.5;
+SELECT student_id, test_score FROM survey WHERE test_score < 80.5;
+SELECT student_id, test_score FROM survey WHERE test_score > 80.5 AND favorite_subject = 'Math';
+SELECT favorite_subject, COUNT(*) AS student_id FROM survey GROUP BY favorite_subject;
+SELECT preferred_learning_method, COUNT(*) AS student_id FROM survey GROUP BY preferred_learning_method;
+SELECT student_id, study_hours_per_week, test_score FROM survey;
+SELECT student_id,  study_hours_per_week, test_score FROM survey WHERE test_score > 80.5;
+
+
+
+SELECT * FROM sales_data;
+SELECT * FROM sales_data WHERE amount is NULL;
+SELECT DISTINCT (city) as UNIQUE_CITIES FROM sales_data;
+SELECT * FROM sales_data WHERE amount > 1000;
+SELECT COUNT(*) FROM sales_data;
+SELECT * FROM sales_data WHERE region = 'South' AND amount BETWEEN 500 AND 1500;
+SELECT * FROM sales_data ORDER BY amount DESC;
+SELECT * FROM sales_data ORDER BY amount ASC;
+SELECT * FROM sales_data ORDER BY amount;
+SELECT * FROM sales_data ORDER BY city ASC;
+SELECT COUNT(*) AS Lagos_sales FROM sales_data WHERE city = 'Lagos';
+SELECT MIN(amount) AS minimum_sales FROM sales_data;
+SELECT MAX(amount) AS maximum_sales FROM sales_data;
+SELECT AVG(amount) AS average_sales FROM sales_data;
+SELECT ROUND(AVG(amount), 2) AS average_sales FROM sales_data;
+SELECT SUM(amount) AS total_sales FROM sales_data;
+SELECT city, SUM(amount) AS city_sales FROM sales_data GROUP BY city;
+SELECT region AVG(amount) AS region_sales FROM sales_data GROUP BY region;
+
+
+SELECT * FROM products;
+SELECT * FROM sales_data;
+SELECT DISTINCT category FROM sales_data;
+SELECT category, SUM(amount) AS Sales_Sum FROM sales_data group by category;
+
+--Get the count of sales by city:
+SELECT city, COUNT(*) Sales_Count FROM sales_data group by city;
+
+--Get the count of sales by city with count above 5:
+SELECT city, COUNT(*) Sales_Count FROM sales_data group by city HAVING Sales_Count > 5;
+
+--Aggregate sales by region including only north and south:
+SELECT region, SUM(amount) AS Sales_Sum FROM sales_data group by region HAVING region IN('South', 'North');
+SELECT region, SUM(amount) AS Sales_Sum FROM sales_data group by region HAVING region = 'South' OR REGION = 'North';
+
+--Counting by region:
+SELECT region, COUNT(*) FROM sales_data group by region HAVING region = 'South' OR region = 'North';
+
+--Get the average sales by category limiting your results to average sales greater than 1000:
+SELECT category, AVG(amount) AS Sales_Average FROM sales_data group by category HAVING Sales_Average > 1000;
+
+
+SELECT region, SUM(amount) AS Sales_Sum FROM sales_data;
+SELECT region, SUM(amount) AS Sales_Sum FROM sales_data GROUP BY region;
+
+SELECT * FROM sales_data where region in('South', 'North');
+SELECT region, SUM(amount) AS Sales_Sum FROM sales_data where region in('South', 'North') GROUP BY region;
+-- Use HAVING clause to filter the aggregate function
+SELECT region, SUM(amount) AS Sales_Sum FROM sales_data where region in('South', 'North') GROUP BY region HAVING amount > 25000;
+
+--Format date column to get only the year:
+SELECT STRFTIME('%Y', date) AS Year FROM sales_data;
+
+--To get only the years, use DISTINCT
+SELECT STRFTIME('%Y', date) AS Year FROM sales_data ORDER BY Year ASC;
+SELECT STRFTIME('%m', date) AS Month FROM sales_data ORDER BY Month ASC;
+SELECT DISTINCT STRFTIME('%Y-%m', date) AS Year FROM sales_data ORDER BY Year ASC;
+
+--Distinct shows all the unique years and months, count gives us the number of records available from the query 
+SELECT COUNT(DISTINCT STRFTIME('%Y-%m', date)) AS Year FROM sales_data ORDER BY Year ASC;
+--For a 2-digit year use '%y'
+
+--05/11/25
+SELECT * FROM sales_data INNER JOIN products ON sales_data.product_id=products.product_id;
+SELECT COUNT(*) FROM sales_data INNER JOIN products ON sales_data.product_id=products.product_id;
+SELECT STRFTIME('%Y', date) AS year, COUNT(*) FROM sales_data GROUP BY Year;
+SELECT STRFTIME('%m', date) AS month, SUM(amount) FROM sales_data GROUP BY month;
+SELECT STRFTIME('%Y-%m', date) AS month_of_year, SUM(amount) FROM sales_data GROUP BY month_of_year;
+SELECT STRFTIME('%d', date) AS day, SUM(amount) FROM sales_data GROUP BY day;
+SELECT STRFTIME('%d', date) AS week_day, SUM(amount) as total_sales FROM sales_data GROUP BY week_day;
+SELECT * FROM sales_data WHERE LOWER(city) = 'lagos';
+SELECT LOWER(city) FROM sales_data WHERE LOWER(city) = 'lagos';
+SELECT UPPER(region) FROM sales_data;
+SELECT * FROM sales_data WHERE category LIKE '%electronics%';
+SELECT * FROM sales_data
+WHERE amount = (SELECT MAX(amount) FROM sales_data);
+
+--(SELECT MAX(amount) FROM sales_data) - sub query;
